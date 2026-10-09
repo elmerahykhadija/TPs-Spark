@@ -1,0 +1,36 @@
+services:
+  spark-master:
+    image: apache/spark:4.0.0
+    container_name: spark-master
+    environment:
+      - SPARK_NO_DAEMONIZE=true
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    command: /opt/spark/sbin/start-master.sh
+
+  spark-worker:
+    image: apache/spark:4.0.0
+    container_name: spark-worker
+    environment:
+      - SPARK_NO_DAEMONIZE=true
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+    ports:
+      - "8081:8081"
+    command: /opt/spark/sbin/start-worker.sh spark://spark-master:7077
+    depends_on:
+      - spark-master
+
+  jupyter:
+    build: .
+    container_name: jupyter-spark
+    ports:
+      - "8888:8888"
+      - "4040:4040"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    volumes:
+      - ./work:/home/jovyan/work
+    depends_on:
+      - spark-master

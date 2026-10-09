@@ -1,0 +1,6 @@
+Spark est un moteur de calcul distribue
+Spark traite les donnees en memoire
+Hadoop stocke les donnees sur disque
+Spark est rapide et Spark est facile
+Les RDD sont immuables et distribues
+Le calcul distribue repose sur les RDD
